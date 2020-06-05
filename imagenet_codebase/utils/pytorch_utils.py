@@ -124,6 +124,7 @@ def measure_net_latency(net, l_type='gpu8', fast=True, input_shape=(3, 224, 224)
         for i in range(n_warmup):
             inner_start_time = time.time()
             net(images)
+            torch.cuda.current_stream().synchronize()
             used_time = (time.time() - inner_start_time) * 1e3  # ms
             measured_latency['warmup'].append(used_time)
             if not clean:
@@ -150,7 +151,7 @@ def get_net_info(net, input_shape=(3, 224, 224), measure_latency=None, print_inf
     # latencies
     latency_types = [] if measure_latency is None else measure_latency.split('#')
     for l_type in latency_types:
-        latency, measured_latency = measure_net_latency(net, l_type, fast=False, input_shape=input_shape)
+        latency, measured_latency = measure_net_latency(net, l_type, fast=False, input_shape=input_shape, clean=True)
         net_info['%s latency' % l_type] = {
             'val': latency,
             'hist': measured_latency
