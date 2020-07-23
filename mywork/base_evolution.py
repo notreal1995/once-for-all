@@ -254,7 +254,7 @@ if __name__ == '__main__':
     print(best_valids)
     print(best_info)
     evolution_finder = EvolutionFinder(constraint_type='rtx-2080ti',
-                                       efficiency_constraint=25,
+                                       efficiency_constraint=20,
                                        efficiency_predictor=est,
                                        accuracy_predictor=acc_est)
 
